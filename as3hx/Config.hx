@@ -26,7 +26,7 @@
 package as3hx;
 
 import haxe.xml.Fast;
-import neko.io.File;
+import sys.io.File;
 
 using StringTools;
 
@@ -84,7 +84,7 @@ class Config {
 	}
 
 	public function init() {
-		var env = neko.Sys.environment();
+		var env = Sys.environment();
 		if (env.exists("AS3HX_CONFIG")) {
 			cfgFile = env.get("AS3HX_CONFIG");
 			return;
@@ -131,20 +131,20 @@ class Config {
 	function processEnvConfig() {
 		// $HOME/.as3hx_config.xml or env
 		if(cfgFile != null) {
-			if(!neko.FileSystem.exists(cfgFile)) {
+			if(!sys.FileSystem.exists(cfgFile)) {
 				neko.Lib.println("Creating " + cfgFile);
 				var fo = File.write(cfgFile, false);
 				fo.writeString(defaultConfig());
 				fo.close();
 			}
-			if(neko.FileSystem.exists(cfgFile)) {
+			if(sys.FileSystem.exists(cfgFile)) {
 				fromXmlString(File.getContent(cfgFile));
 			}
 		}
 	}
 
 	function processLocalConfig() {
-		if(neko.FileSystem.exists("./.as3hx_config.xml")) {
+		if(sys.FileSystem.exists("./.as3hx_config.xml")) {
 			fromXmlString(File.getContent("./.as3hx_config.xml"));
 		}
 	}
@@ -162,14 +162,14 @@ class Config {
 	}
 
 	function processCommandLine() {
-		var args = neko.Sys.args().slice(0);
+		var args = Sys.args().slice(0);
 		var arg = "";
 		while(true) {
 			arg = args.shift();
 			switch(arg) {
 			case "-help", "--help":
 				usage();
-				neko.Sys.exit(0);
+				Sys.exit(0);
 			case "-uint2int", "--uint2int":
 				uintToInt = true;
 			case "-no-cast-guess", "--no-cast-guess":
@@ -190,7 +190,7 @@ class Config {
 		}
 		if(arg == null) {
 			usage();
-			neko.Sys.exit(1);
+			Sys.exit(1);
 		}
 		src = Run.directory(arg);
 		dst = Run.directory(args.shift(), "./out");
@@ -271,7 +271,7 @@ class Config {
 	}
 
 	public static function isWindows() : Bool {
-		var os = neko.Sys.systemName();
+		var os = Sys.systemName();
 		return (new EReg("window","i")).match(os);
 	}
 

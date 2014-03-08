@@ -1089,7 +1089,7 @@ class Writer
 					write(")");
 				} else {
 					//write("/*!!!" + etype + "!!!*/");
-					if(etype != null && etype != "Array<Dynamic>" && itype != null && itype != "Int") {
+					if(etype != null && etype != "Array<Dynamic>" && itype != null && itype != "Int" && itype != "UInt") {
 						var isString = (itype == "String");
 						if(inLvalAssign)
 							write("Reflect.setField(");
